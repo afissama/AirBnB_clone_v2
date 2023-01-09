@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
+import copy
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime
@@ -30,10 +31,12 @@ class BaseModel:
             del kwargs['__class__']
             self.__dict__.update(kwargs)
 
+
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -44,10 +47,11 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        temp = copy.deepcopy(self.__dict__)
+
+        temp['__class__'] = self.__class__.__name__
+        temp['updated_at'] = self.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
+        temp['created_at'] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
+        if "_sa_instance_state" in temp.keys():
+            del temp["_sa_instance_state"]
+        return temp
