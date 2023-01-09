@@ -55,3 +55,8 @@ class BaseModel:
         if "_sa_instance_state" in temp.keys():
             del temp["_sa_instance_state"]
         return temp
+
+    def delete(self):
+        """Delete  the current instance from the storage"""
+        from models import storage
+        storage.delete(self)
