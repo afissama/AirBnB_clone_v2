@@ -23,6 +23,12 @@ class DBStorage():
             Base.metadata.drop_all()
     
     def all(self, cls=None):
+        """Get all objects from db"""
+        from models.city import City
+        from models.state import State
+        from models.amenity import Amenity
+        from models.user import User
+        from models.place import Place
         _dict_objects = {}
         rows = self.__session.query(eval(cls)).all()
         
@@ -31,11 +37,11 @@ class DBStorage():
                 _dict_objects[cls + "." + row.id] = row
             return _dict_objects
         
-        _dict_objects = {**_dict_objects, **self.all(user.User)}
-        _dict_objects = {**_dict_objects, **self.all(state.State)}
-        _dict_objects = {**_dict_objects, **self.all(city.City)}
-        _dict_objects = {**_dict_objects, **self.all(amenity.Amenity)}
-        _dict_objects = {**_dict_objects, **self.all(place.Place)}
+        _dict_objects = {**_dict_objects, **self.all(User)}
+        _dict_objects = {**_dict_objects, **self.all(State)}
+        _dict_objects = {**_dict_objects, **self.all(City)}
+        _dict_objects = {**_dict_objects, **self.all(Amenity)}
+        _dict_objects = {**_dict_objects, **self.all(Place)}
         
         return _dict_objects
 

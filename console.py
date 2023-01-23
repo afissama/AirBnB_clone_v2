@@ -146,6 +146,7 @@ class HBNBCommand(cmd.Cmd):
                         except ValueError:
                             continue
                     setattr(new_instance, tmp[0], tmp[1])
+        new_instance.save()
         storage.save()
         print(new_instance.id)
 
@@ -230,14 +231,14 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            tmp_list = storage.all(args)
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            tmp_list = storage.all()
+        
+        for key in tmp_list.keys():
+            print_list.append(tmp_list[key])
 
-        print(print_list)
+        print (print_list)
 
     def help_all(self):
         """ Help information for the all command """
