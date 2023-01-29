@@ -1,9 +1,14 @@
 """ Module for storage in DB"""
 import os
 from sqlalchemy import create_engine
-
 from models.base_model import Base
-from models import place, city, state, amenity, user
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+
 
 class DBStorage():
     """ DataBase Storage class"""
@@ -12,6 +17,9 @@ class DBStorage():
     __session = None
 
     def __init__(self):
+        """
+        Create a new engine for storage instance
+        """
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}?charset=utf8mb4".format(
             os.getenv("HBNB_MYSQL_USER"),
             os.getenv("HBNB_MYSQL_PWD"),
@@ -63,9 +71,8 @@ class DBStorage():
         ""
         from sqlalchemy.orm import sessionmaker
         from sqlalchemy.orm import scoped_session
+
         Base.metadata.create_all(self.__engine)
-        
         sm = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sm)
-
         self.__session = Session()
