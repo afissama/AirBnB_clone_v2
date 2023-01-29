@@ -21,9 +21,9 @@ class DBStorage():
         Create a new engine for storage instance
         """
         self.__engine = create_engine(
-                                      "mysql+mysqldb:\
-                                       //{}:{}@{}/{}?\
-                                       charset=utf8mb4".format(
+                                      "mysql+mysqldb:"
+                                      "//{}:{}@{}/{}?"
+                                      "charset=utf8mb4".format(
                                         os.getenv("HBNB_MYSQL_USER"),
                                         os.getenv("HBNB_MYSQL_PWD"),
                                         os.getenv("HBNB_MYSQL_HOST"),
