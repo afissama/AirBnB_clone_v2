@@ -12,7 +12,6 @@ from sqlalchemy import Table
 class Place(BaseModel, Base):
     """ A place to stay """
 
-
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
@@ -25,14 +24,21 @@ class Place(BaseModel, Base):
     latitude = Column(FLOAT, nullable=True, default=0)
     longitude = Column(FLOAT, nullable=True, default=0)
     place_amenity = Table("place_amenity", Base.metadata,
-                            Column('place_id', String(60), ForeignKey('places.id'), nullable=False),
-                            Column('amenity_id', String(60), ForeignKey('amenities.id'), nullable=False)
-                        )
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 nullable=False))
     amenity_ids = []
 
     if os.getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", backref="place", cascade="all, delete")
-        amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
+        reviews = relationship("Review",
+                               backref="place",
+                               cascade="all,delete")
+        amenities = relationship("Amenity",
+                                 secondary="place_amenity",
+                                 viewonly=False)
     else:
         @property
         def reviews(self):
@@ -63,7 +69,7 @@ class Place(BaseModel, Base):
                 if amenity_key in self.amenity_ids:
                     amenities.append(all_amenities[amenity_key])
             return amenities
-        
+
         @amenities.setter
         def amenities(self, value):
             """
