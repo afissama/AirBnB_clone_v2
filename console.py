@@ -150,7 +150,6 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
 
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -234,11 +233,11 @@ class HBNBCommand(cmd.Cmd):
             tmp_list = storage.all(args)
         else:
             tmp_list = storage.all()
-        
+
         for key in tmp_list.keys():
             print_list.append(tmp_list[key])
 
-        print (print_list)
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """

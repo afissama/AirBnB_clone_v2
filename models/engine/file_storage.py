@@ -32,7 +32,6 @@ class FileStorage:
                     filtered_[obj] = FileStorage.__objects[obj]
             return filtered_
 
-
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
@@ -78,7 +77,7 @@ class FileStorage:
             'Review']
         if obj is None:
             return
-        
+
         if obj.__class__.__name__ not in classes:
             return
         id_ = obj.__class__.__name__ + '.' + obj.id

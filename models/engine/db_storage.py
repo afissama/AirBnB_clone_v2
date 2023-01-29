@@ -20,37 +20,37 @@ class DBStorage():
         """
         Create a new engine for storage instance
         """
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}?charset=utf8mb4".format(
-            os.getenv("HBNB_MYSQL_USER"),
-            os.getenv("HBNB_MYSQL_PWD"),
-            os.getenv("HBNB_MYSQL_HOST"),
-            os.getenv("HBNB_MYSQL_DB")
-        ), pool_pre_ping=True)
+        self.__engine = create_engine(
+                                      "mysql+mysqldb:\
+                                       //{}:{}@{}/{}?\
+                                       charset=utf8mb4".format(
+                                        os.getenv("HBNB_MYSQL_USER"),
+                                        os.getenv("HBNB_MYSQL_PWD"),
+                                        os.getenv("HBNB_MYSQL_HOST"),
+                                        os.getenv("HBNB_MYSQL_DB")
+                                        ), pool_pre_ping=True)
 
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all()
-    
+
     def all(self, cls=None):
-        """Get all objects from db"""
-        from models.city import City
-        from models.state import State
-        from models.amenity import Amenity
-        from models.user import User
-        from models.place import Place
+        """Get all objects
+        from db
+        """
         _dict_objects = {}
         rows = self.__session.query(eval(cls)).all()
-        
+
         if cls is not None:
             for row in rows:
                 _dict_objects[cls + "." + row.id] = row
             return _dict_objects
-        
+
         _dict_objects = {**_dict_objects, **self.all(User)}
         _dict_objects = {**_dict_objects, **self.all(State)}
         _dict_objects = {**_dict_objects, **self.all(City)}
         _dict_objects = {**_dict_objects, **self.all(Amenity)}
         _dict_objects = {**_dict_objects, **self.all(Place)}
-        
+
         return _dict_objects
 
     def new(self, obj):
