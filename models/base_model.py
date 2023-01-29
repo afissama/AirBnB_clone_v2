@@ -15,9 +15,9 @@ class BaseModel:
         created_at (sqlalchemy DateTime): The datetime at creation.
         updated_at (sqlalchemy DateTime): The datetime of last update.
     """
-    id = Column(String(60), unique=True, nullable=False, primary_key= True)
-    created_at= Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at= Column(DateTime, nullable=False, default=datetime.utcnow())
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -29,20 +29,26 @@ class BaseModel:
         if kwargs:
 
             if "updated_at" in kwargs.keys():
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                                                         kwargs['updated_at'],
+                                                         '%Y-%m-%dT%H:%M:%S.%f'
+                                                 )
             if "created_at" in kwargs.keys():
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                           '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(
+                                                         kwargs['created_at'],
+                                                         '%Y-%m-%dT%H:%M:%S.%f'
+                                           )
 
             if "__class__" in kwargs.keys():
                 del kwargs['__class__']
 
             self.__dict__.update(kwargs)
 
-
     def __str__(self):
-        """Returns a string representation of the instance"""
+        """Returns a string representation
+        of the instance
+        """
+
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         tmp_dict = self.__dict__
         if "_sa_instance_state" in tmp_dict.keys():
